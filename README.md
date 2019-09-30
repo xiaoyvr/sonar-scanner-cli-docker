@@ -19,18 +19,16 @@ Licensed under the [GNU Lesser General Public License, Version 3.0](http://www.g
 
 ## On Linux
 
-To analyse the project in directory `/path/to/project`, you must first provide the URL to the SonarQube instance by specify it in the project's `sonar-project.properties` with `sonar.host.url=http://foo.acme:9000`.
-
 You can then run the following command:
 
 ```
-docker run --user="$(id -u):$(id -g)" -it -v "/path/to/project:/usr/src" sonarsource/sonar-scanner-cli
+docker run -e SONAR_HOST_URL=http://foo.acme:9000 --user="$(id -u):$(id -g)" -it -v "/path/to/project:/usr/src" sonarsource/sonar-scanner-cli
 ```
 
 To analysis the project in the current directory:
 
 ```
-docker run --user="$(id -u):$(id -g)" -it -v "$PWD:/usr/src" sonarsource/sonar-scanner-cli
+docker run -e SONAR_HOST_URL=http://foo.acme:9000 --user="$(id -u):$(id -g)" -it -v "$PWD:/usr/src" sonarsource/sonar-scanner-cli
 ```
 
 ### Write permissions
@@ -46,13 +44,13 @@ The command is quite similar to the one for Linux except that you don't need to 
 To analyse the project located in `/path/to/project`, execute:
 
 ```
-docker run -it -v "/path/to/project:/usr/src" sonarsource/sonar-scanner-cli
+docker run -e SONAR_HOST_URL=http://foo.acme:9000 -it -v "/path/to/project:/usr/src" sonarsource/sonar-scanner-cli
 ```
 
 To analyse the project in the current directory, execute:
 
 ```
-docker run -it -v "$(pwd):/usr/src" sonarsource/sonar-scanner-cli
+docker run -e SONAR_HOST_URL=http://foo.acme:9000 -it -v "$(pwd):/usr/src" sonarsource/sonar-scanner-cli
 ```
 
 ## `.sonar` directory
@@ -63,10 +61,11 @@ When running the scanner with this image, this `.sonar` directory is created in 
 
 Caching is actually shared between projects when running the scanner natively as the `.sonar` is created in the home directory of the current user (eg. `/home/my_user/.sonar`).
 
-Here is how you can reproduce this behavior.
+You can reproduce this behavior, by adding the following to the `docker run` command:
 
-1. specify the new location of the directory in the project's `sonar-project.properties` with `sonar.userHome=/usr/.sonar`
-2. add the following option the `docker run` command: `-v "/home/my_user/.sonar:/usr/.sonar"`
+```
+-e SONAR_USER_HOME=/usr/.sonar -v "/home/my_user/.sonar:/usr/.sonar"
+```
 
 # Developer documentation
 
