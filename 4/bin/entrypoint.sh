@@ -13,6 +13,7 @@ add_env_var_as_env_prop() {
 add_env_var_as_env_prop "${SONAR_HOST_URL:-}" "sonar.host.url"
 add_env_var_as_env_prop "${SONAR_LOGIN:-}" "sonar.login"
 add_env_var_as_env_prop "${SONAR_PASSWORD:-}" "sonar.password"
+add_env_var_as_env_prop "${SONAR_USER_HOME:-}" "sonar.userHome"
 
 export SONAR_USER_HOME="$PWD/.sonar"
 
