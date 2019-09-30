@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-args=""
+declare -a args
 
 add_env_var_as_env_prop() {
   if [ ! -z "$1" ]; then
-    args="${args} -D$2=$1"
+    args+=("-D$2=$1")
   fi
 }
 
@@ -17,4 +17,4 @@ add_env_var_as_env_prop "${SONAR_USER_HOME:-}" "sonar.userHome"
 
 export SONAR_USER_HOME="$PWD/.sonar"
 
-sonar-scanner $args
+sonar-scanner "${args[@]}"
